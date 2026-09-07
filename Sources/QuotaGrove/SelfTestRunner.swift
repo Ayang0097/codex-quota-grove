@@ -110,9 +110,9 @@ enum SelfTestRunner {
 
         var rain = RainParticleSystem()
         rain.start(in: CGSize(width: 200, height: 80))
-        expect(rain.drops.count == 52, "雨效应使用 52 滴分层细雨", report: &report)
+        expect(rain.drops.count == 64, "雨效应使用 64 滴分层细雨", report: &report)
         expect(rain.drops.allSatisfy { $0.windSpeed < 0 }, "雨滴应统一向左下方倾斜", report: &report)
-        expect(rain.drops.allSatisfy { $0.lineWidth < 0.5 }, "雨滴线宽应保持细腻", report: &report)
+        expect(rain.drops.allSatisfy { $0.lineWidth < 0.75 }, "近景雨滴可以更明显但仍应保持细腻", report: &report)
         expect(
             rain.drops.contains { $0.depth < 0.36 }
                 && rain.drops.contains { $0.depth > 0.4 && $0.depth < 0.75 }
@@ -334,6 +334,46 @@ enum SelfTestRunner {
         )
         expect(abyssalBurst.jellyfish.allSatisfy { $0.kind == .garnet }, "低额阶段深海幻境应使用石榴红水母", report: &report)
 
+        let chronoforgeThemeKinds: [(QuotaTheme, ChronoforgeOrbitKind)] = [
+            (.forest, .verdigris),
+            (.autumn, .brass),
+            (.apocalypse, .cinnabar),
+            (.wasteland, .silver)
+        ]
+        for (theme, expectedKind) in chronoforgeThemeKinds {
+            var chronoforge = ChronoforgeOrbitSystem()
+            chronoforge.emitAmbient(for: theme, in: CGSize(width: 200, height: 80))
+            expect(
+                chronoforge.orbits.count == ChronoforgeOrbitSystem.ambientOrbitCount,
+                "时间铸境环境动效应使用固定轻量星轮数",
+                report: &report
+            )
+            expect(
+                chronoforge.orbits.allSatisfy { $0.kind == expectedKind },
+                "时间铸境星轮材质应跟随额度主题",
+                report: &report
+            )
+            let initialPositions = chronoforge.orbits.map(\.position)
+            let initialRingPhases = chronoforge.orbits.map(\.ringPhase)
+            for _ in 0..<8 { chronoforge.advance(by: 1.0 / 15.0) }
+            expect(chronoforge.orbits.map(\.position) != initialPositions, "时间铸境星轮应沿时间流持续漂移", report: &report)
+            expect(chronoforge.orbits.map(\.ringPhase) != initialRingPhases, "时间铸境星轮轨道应持续自转", report: &report)
+        }
+
+        var chronoforgeBurst = ChronoforgeOrbitSystem()
+        chronoforgeBurst.emitManualBurst(for: .apocalypse, in: CGSize(width: 200, height: 80))
+        expect(
+            chronoforgeBurst.orbits.count == ChronoforgeOrbitSystem.manualBurstOrbitCount,
+            "双击时间铸境应触发完整星轮迁徙",
+            report: &report
+        )
+        expect(
+            ChronoforgeOrbitSystem.manualBurstWaveCounts == [1, 3, 7, 4, 2],
+            "时间铸境星轮迁徙应按先少后多再少释放",
+            report: &report
+        )
+        expect(chronoforgeBurst.orbits.allSatisfy { $0.kind == .cinnabar }, "低额阶段时间铸境应使用朱砂裂隙星轮", report: &report)
+
         return report
     }
 
@@ -424,6 +464,9 @@ enum SelfTestRunner {
             store.selectBuiltInStyle(.abyssalReverie)
             expect(store.selectedStyle == .abyssalReverie, "深海幻境背景套系应可持久选择", report: &report)
             expect(store.image(for: .forest) != nil, "深海幻境背景套系应可加载开发资源", report: &report)
+            store.selectBuiltInStyle(.chronoforge)
+            expect(store.selectedStyle == .chronoforge, "时间铸境背景套系应可持久选择", report: &report)
+            expect(store.image(for: .forest) != nil, "时间铸境背景套系应可加载开发资源", report: &report)
             try store.installCustomBackground(from: sourceURL)
             expect(store.hasCustomBackground, "选择图片后应保存本地自定义背景", report: &report)
             expect(store.selectedStyle == .custom, "选择图片后应切换到自定义背景", report: &report)

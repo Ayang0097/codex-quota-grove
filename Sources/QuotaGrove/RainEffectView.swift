@@ -90,99 +90,137 @@ final class RainEffectView: NSView {
     }
 
     private func drawRain() {
-        NSColor(calibratedRed: 0.015, green: 0.065, blue: 0.07, alpha: 0.09).setFill()
+        NSColor(calibratedRed: 0.012, green: 0.052, blue: 0.064, alpha: 0.115).setFill()
         bounds.fill()
 
-        let segmentFractions: [CGFloat] = [0, 0.2, 0.52, 0.78, 1]
-        let segmentWidthScales: [CGFloat] = [1, 0.72, 0.42, 0.2]
-        let segmentOpacityScales: [CGFloat] = [1, 0.66, 0.34, 0.12]
-        let layerWidths: [CGFloat] = [0.15, 0.29, 0.5]
-        let layerOpacities: [CGFloat] = [0.22, 0.38, 0.56]
-        let layerColors: [NSColor] = [
-            NSColor(calibratedRed: 0.75, green: 0.86, blue: 0.88, alpha: 1),
-            NSColor(calibratedRed: 0.79, green: 0.9, blue: 0.91, alpha: 1),
-            NSColor(calibratedRed: 0.84, green: 0.95, blue: 0.96, alpha: 1)
-        ]
-        let segmentPaths: [[NSBezierPath]] = (0..<3).map { _ in
-            (0..<4).map { _ in NSBezierPath() }
-        }
-        let haloPaths = (0..<3).map { _ in NSBezierPath() }
+        drawRainVeil()
 
         for drop in particles.drops {
-            let speed = max(1, hypot(drop.windSpeed, drop.fallSpeed))
-            let tail = NSPoint(
-                x: drop.position.x - drop.windSpeed / speed * drop.length,
-                y: drop.position.y + drop.fallSpeed / speed * drop.length
-            )
-            let direction = CGVector(dx: tail.x - drop.position.x, dy: tail.y - drop.position.y)
-            let layer = drop.depth < 0.36 ? 0 : (drop.depth < 0.76 ? 1 : 2)
-
-            for segmentIndex in 0..<4 {
-                let startFraction = segmentFractions[segmentIndex]
-                let endFraction = segmentFractions[segmentIndex + 1]
-                let start = NSPoint(
-                    x: drop.position.x + direction.dx * startFraction,
-                    y: drop.position.y + direction.dy * startFraction
-                )
-                let end = NSPoint(
-                    x: drop.position.x + direction.dx * endFraction,
-                    y: drop.position.y + direction.dy * endFraction
-                )
-                segmentPaths[layer][segmentIndex].move(to: start)
-                segmentPaths[layer][segmentIndex].line(to: end)
-            }
-
-            if layer != 1 {
-                haloPaths[layer].move(to: drop.position)
-                haloPaths[layer].line(to: tail)
-            }
-        }
-
-        for layer in 0..<3 {
-            if layer != 1 {
-                let halo = haloPaths[layer]
-                halo.lineWidth = layerWidths[layer] * (layer == 2 ? 2.1 : 1.7)
-                halo.lineCapStyle = .round
-                layerColors[layer].withAlphaComponent(layer == 2 ? 0.052 : 0.012).setStroke()
-                halo.stroke()
-            }
-            for segmentIndex in 0..<4 {
-                let path = segmentPaths[layer][segmentIndex]
-                path.lineWidth = max(0.06, layerWidths[layer] * segmentWidthScales[segmentIndex])
-                path.lineCapStyle = .round
-                layerColors[layer]
-                    .withAlphaComponent(layerOpacities[layer] * segmentOpacityScales[segmentIndex])
-                    .setStroke()
-                path.stroke()
-            }
+            draw(drop)
         }
 
         for splash in particles.splashes {
-            let progress = splash.progress
-            let opacity = splash.opacity
-            let width = splash.size * (0.42 + progress * 0.92)
-            let rippleRect = NSRect(
-                x: splash.position.x - width / 2,
-                y: splash.position.y - 0.7,
-                width: width,
-                height: max(0.8, width * 0.22)
-            )
-            let ripple = NSBezierPath(ovalIn: rippleRect)
-            ripple.lineWidth = 0.45
-            NSColor(calibratedRed: 0.72, green: 0.9, blue: 0.9, alpha: 0.26 * opacity).setStroke()
-            ripple.stroke()
+            draw(splash)
+        }
+    }
 
-            if progress < 0.52 {
-                let lift = (1 - progress / 0.52) * splash.size * 0.5
-                for direction: CGFloat in [-1, 1] {
-                    let bead = NSBezierPath()
-                    bead.move(to: NSPoint(x: splash.position.x + direction * 0.5, y: splash.position.y + 0.3))
-                    bead.line(to: NSPoint(x: splash.position.x + direction * splash.size * 0.24, y: splash.position.y + lift))
-                    bead.lineWidth = 0.55
-                    bead.lineCapStyle = .round
-                    NSColor(calibratedRed: 0.76, green: 0.92, blue: 0.92, alpha: 0.31 * opacity).setStroke()
-                    bead.stroke()
-                }
+    private func drawRainVeil() {
+        let veilColor = NSColor(calibratedRed: 0.68, green: 0.84, blue: 0.89, alpha: 1)
+        let bands: [(x: CGFloat, width: CGFloat, opacity: CGFloat)] = [
+            (bounds.width * 0.63, 7.5, 0.014),
+            (bounds.width * 0.77, 11, 0.011),
+            (bounds.width * 0.91, 6, 0.016)
+        ]
+
+        for band in bands {
+            let path = NSBezierPath()
+            path.move(to: NSPoint(x: band.x + 24, y: bounds.maxY + 8))
+            path.line(to: NSPoint(x: band.x - 15, y: bounds.minY - 8))
+            path.lineWidth = band.width
+            path.lineCapStyle = .round
+            veilColor.withAlphaComponent(band.opacity).setStroke()
+            path.stroke()
+        }
+    }
+
+    private func draw(_ drop: RainDrop) {
+        let speed = max(1, hypot(drop.windSpeed, drop.fallSpeed))
+        let direction = CGVector(
+            dx: -drop.windSpeed / speed * drop.length,
+            dy: drop.fallSpeed / speed * drop.length
+        )
+        let normal = CGVector(dx: -direction.dy / drop.length, dy: direction.dx / drop.length)
+        let fractions: [CGFloat] = [0, 0.16, 0.4, 0.7, 1]
+        let widthScales: [CGFloat] = [1.08, 0.82, 0.5, 0.22]
+        let opacityScales: [CGFloat] = [1, 0.78, 0.47, 0.18]
+        let shimmer = drop.shimmer
+
+        let layerColors: [NSColor] = [
+            NSColor(calibratedRed: 0.68, green: 0.82, blue: 0.86, alpha: 1),
+            NSColor(calibratedRed: 0.78, green: 0.91, blue: 0.94, alpha: 1),
+            NSColor(calibratedRed: 0.9, green: 0.98, blue: 1, alpha: 1)
+        ]
+        let layer = drop.depth < 0.36 ? 0 : (drop.depth < 0.76 ? 1 : 2)
+        let color = layerColors[layer]
+
+        func point(at fraction: CGFloat, offset: CGFloat = 0) -> NSPoint {
+            let bow = sin(.pi * fraction) * drop.curvature + offset
+            return NSPoint(
+                x: drop.position.x + direction.dx * fraction + normal.dx * bow,
+                y: drop.position.y + direction.dy * fraction + normal.dy * bow
+            )
+        }
+
+        if layer == 2 {
+            let halo = NSBezierPath()
+            halo.move(to: point(at: 0))
+            halo.line(to: point(at: 1))
+            halo.lineWidth = drop.lineWidth * 2.75
+            halo.lineCapStyle = .round
+            color.withAlphaComponent(0.075 * drop.opacity * shimmer).setStroke()
+            halo.stroke()
+        }
+
+        for segmentIndex in 0..<4 {
+            let path = NSBezierPath()
+            path.move(to: point(at: fractions[segmentIndex]))
+            path.line(to: point(at: fractions[segmentIndex + 1]))
+            path.lineWidth = max(0.07, drop.lineWidth * widthScales[segmentIndex])
+            path.lineCapStyle = .round
+            color
+                .withAlphaComponent(drop.opacity * shimmer * opacityScales[segmentIndex])
+                .setStroke()
+            path.stroke()
+        }
+
+        guard layer >= 1 else { return }
+
+        let headSize = max(0.42, drop.lineWidth * (layer == 2 ? 1.65 : 1.25))
+        let headRect = NSRect(
+            x: drop.position.x - headSize / 2,
+            y: drop.position.y - headSize / 2,
+            width: headSize,
+            height: headSize
+        )
+        color.withAlphaComponent(drop.opacity * shimmer * (layer == 2 ? 0.9 : 0.58)).setFill()
+        NSBezierPath(ovalIn: headRect).fill()
+
+        if layer == 2 {
+            let refraction = NSBezierPath()
+            refraction.move(to: point(at: 0.04, offset: 0.48))
+            refraction.line(to: point(at: 0.46, offset: 0.32))
+            refraction.lineWidth = max(0.08, drop.lineWidth * 0.32)
+            refraction.lineCapStyle = .round
+            NSColor.white.withAlphaComponent(drop.opacity * shimmer * 0.38).setStroke()
+            refraction.stroke()
+        }
+    }
+
+    private func draw(_ splash: RainSplash) {
+        let progress = splash.progress
+        let opacity = splash.opacity
+        let width = splash.size * (0.46 + progress * 1.02)
+        let rippleRect = NSRect(
+            x: splash.position.x - width / 2,
+            y: splash.position.y - 0.75,
+            width: width,
+            height: max(0.9, width * 0.23)
+        )
+        let ripple = NSBezierPath(ovalIn: rippleRect)
+        ripple.lineWidth = 0.58
+        NSColor(calibratedRed: 0.76, green: 0.92, blue: 0.96, alpha: 0.36 * opacity).setStroke()
+        ripple.stroke()
+
+        if progress < 0.56 {
+            let lift = (1 - progress / 0.56) * splash.size * 0.56
+            for direction: CGFloat in [-1, 1] {
+                let bead = NSBezierPath()
+                bead.move(to: NSPoint(x: splash.position.x + direction * 0.5, y: splash.position.y + 0.35))
+                bead.line(to: NSPoint(x: splash.position.x + direction * splash.size * 0.26, y: splash.position.y + lift))
+                bead.lineWidth = 0.62
+                bead.lineCapStyle = .round
+                NSColor(calibratedRed: 0.84, green: 0.96, blue: 1, alpha: 0.42 * opacity).setStroke()
+                bead.stroke()
             }
         }
     }

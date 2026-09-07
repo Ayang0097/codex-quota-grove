@@ -68,6 +68,7 @@ final class QuotaCardView: NSView {
     private var beaconParticles = BeaconParticleSystem()
     private var moonButterflies = MoonButterflySystem()
     private var abyssalJellyfish = AbyssalJellyfishSystem()
+    private var chronoforgeOrbits = ChronoforgeOrbitSystem()
     private let rainEffectView = RainEffectView(frame: .zero)
     private let snowEffectView = SnowEffectView(frame: .zero)
     private var weatherRainRequested = false
@@ -193,6 +194,7 @@ final class QuotaCardView: NSView {
         beaconParticles.advance(by: deltaTime)
         moonButterflies.advance(by: deltaTime)
         abyssalJellyfish.advance(by: deltaTime)
+        chronoforgeOrbits.advance(by: deltaTime)
         needsDisplay = true
     }
 
@@ -205,6 +207,8 @@ final class QuotaCardView: NSView {
             moonButterflies.emitManualBurst(for: currentTheme, in: bounds.size)
         } else if ThemeBackgroundStore.shared.usesAbyssalEffects {
             abyssalJellyfish.emitManualBurst(for: currentTheme, in: bounds.size)
+        } else if ThemeBackgroundStore.shared.usesChronoforgeEffects {
+            chronoforgeOrbits.emitManualBurst(for: currentTheme, in: bounds.size)
         } else {
             leafParticles.emitManualBurst(in: bounds.size)
         }
@@ -217,6 +221,7 @@ final class QuotaCardView: NSView {
         beaconParticles.removeAll()
         moonButterflies.removeAll()
         abyssalJellyfish.removeAll()
+        chronoforgeOrbits.removeAll()
         leafAnimationTimer?.invalidate()
         leafAnimationTimer = nil
         needsDisplay = true
@@ -309,7 +314,8 @@ final class QuotaCardView: NSView {
               astralParticles.isEmpty,
               beaconParticles.isEmpty,
               moonButterflies.isEmpty,
-              abyssalJellyfish.isEmpty
+              abyssalJellyfish.isEmpty,
+              chronoforgeOrbits.isEmpty
         else { return }
         if ThemeBackgroundStore.shared.usesAstralEffects {
             guard !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
@@ -326,6 +332,10 @@ final class QuotaCardView: NSView {
         } else if ThemeBackgroundStore.shared.usesAbyssalEffects {
             guard !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
             abyssalJellyfish.emitAmbient(for: currentTheme, in: bounds.size)
+            startLeafAnimationIfNeeded()
+        } else if ThemeBackgroundStore.shared.usesChronoforgeEffects {
+            guard !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
+            chronoforgeOrbits.emitAmbient(for: currentTheme, in: bounds.size)
             startLeafAnimationIfNeeded()
         } else {
             emitThemeParticles(forPercentageDrop: 1)
@@ -413,6 +423,7 @@ final class QuotaCardView: NSView {
         drawBeaconBirds()
         drawMoonButterflies()
         drawAbyssalJellyfish()
+        drawChronoforgeOrbits()
         NSGraphicsContext.restoreGraphicsState()
 
         currentBorderColor.setStroke()
@@ -433,6 +444,8 @@ final class QuotaCardView: NSView {
             moonButterflies.emit(forPercentageDrop: drop, theme: currentTheme, in: bounds.size)
         } else if ThemeBackgroundStore.shared.usesAbyssalEffects {
             abyssalJellyfish.emit(forPercentageDrop: drop, theme: currentTheme, in: bounds.size)
+        } else if ThemeBackgroundStore.shared.usesChronoforgeEffects {
+            chronoforgeOrbits.emit(forPercentageDrop: drop, theme: currentTheme, in: bounds.size)
         } else {
             leafParticles.emit(forPercentageDrop: drop, in: bounds.size)
         }
@@ -450,6 +463,8 @@ final class QuotaCardView: NSView {
             moonButterflies.emitManualBurst(for: currentTheme, in: bounds.size)
         } else if ThemeBackgroundStore.shared.usesAbyssalEffects {
             abyssalJellyfish.emitManualBurst(for: currentTheme, in: bounds.size)
+        } else if ThemeBackgroundStore.shared.usesChronoforgeEffects {
+            chronoforgeOrbits.emitManualBurst(for: currentTheme, in: bounds.size)
         } else {
             leafParticles.emitManualBurst(in: bounds.size)
         }
@@ -468,13 +483,15 @@ final class QuotaCardView: NSView {
             self.beaconParticles.advance(by: now - self.previousLeafTick)
             self.moonButterflies.advance(by: now - self.previousLeafTick)
             self.abyssalJellyfish.advance(by: now - self.previousLeafTick)
+            self.chronoforgeOrbits.advance(by: now - self.previousLeafTick)
             self.previousLeafTick = now
             self.needsDisplay = true
             if self.leafParticles.isEmpty,
                self.astralParticles.isEmpty,
                self.beaconParticles.isEmpty,
                self.moonButterflies.isEmpty,
-               self.abyssalJellyfish.isEmpty {
+               self.abyssalJellyfish.isEmpty,
+               self.chronoforgeOrbits.isEmpty {
                 self.leafAnimationTimer?.invalidate()
                 self.leafAnimationTimer = nil
             }
@@ -1101,6 +1118,154 @@ final class QuotaCardView: NSView {
                     y: bellHeight * 0.18,
                     width: size * 0.4,
                     height: bellHeight * 0.28
+                )
+            ).fill()
+
+            NSGraphicsContext.restoreGraphicsState()
+        }
+    }
+
+    private func drawChronoforgeOrbits() {
+        guard !chronoforgeOrbits.isEmpty else { return }
+        let visibleOrbits = chronoforgeOrbits.orbits
+            .filter(\.isVisible)
+            .sorted { $0.depth < $1.depth }
+
+        for orbit in visibleOrbits {
+            let point = orbit.renderedPosition
+            let opacity = orbit.opacity * (0.38 + orbit.depth * 0.62)
+            let size = orbit.size * orbit.distanceScale * orbit.pulse
+
+            let baseColor: NSColor
+            let highlightColor: NSColor
+            let coreColor: NSColor
+            switch orbit.kind {
+            case .verdigris:
+                baseColor = NSColor(calibratedRed: 0.2, green: 0.78, blue: 0.67, alpha: 1)
+                highlightColor = NSColor(calibratedRed: 0.72, green: 1, blue: 0.9, alpha: 1)
+                coreColor = NSColor(calibratedRed: 0.13, green: 0.38, blue: 0.48, alpha: 1)
+            case .brass:
+                baseColor = NSColor(calibratedRed: 0.82, green: 0.5, blue: 0.18, alpha: 1)
+                highlightColor = NSColor(calibratedRed: 1, green: 0.84, blue: 0.48, alpha: 1)
+                coreColor = NSColor(calibratedRed: 0.46, green: 0.21, blue: 0.08, alpha: 1)
+            case .cinnabar:
+                baseColor = NSColor(calibratedRed: 0.8, green: 0.12, blue: 0.08, alpha: 1)
+                highlightColor = NSColor(calibratedRed: 1, green: 0.48, blue: 0.27, alpha: 1)
+                coreColor = NSColor(calibratedRed: 0.34, green: 0.02, blue: 0.03, alpha: 1)
+            case .silver:
+                baseColor = NSColor(calibratedRed: 0.68, green: 0.74, blue: 0.82, alpha: 1)
+                highlightColor = NSColor(calibratedRed: 0.98, green: 0.98, blue: 1, alpha: 1)
+                coreColor = NSColor(calibratedRed: 0.32, green: 0.35, blue: 0.43, alpha: 1)
+            }
+
+            NSGraphicsContext.saveGraphicsState()
+            let transform = NSAffineTransform()
+            transform.translateX(by: point.x, yBy: point.y)
+            transform.rotate(byDegrees: orbit.rotation)
+            transform.concat()
+
+            baseColor.withAlphaComponent(0.1 * opacity).setFill()
+            NSBezierPath(
+                ovalIn: NSRect(x: -size * 1.65, y: -size * 1.3, width: size * 3.3, height: size * 2.6)
+            ).fill()
+
+            for ringIndex in 0..<3 {
+                NSGraphicsContext.saveGraphicsState()
+                let ringRotation = NSAffineTransform()
+                let direction: CGFloat = ringIndex == 1 ? -1 : 1
+                ringRotation.rotate(byDegrees: (orbit.ringPhase * 180 / .pi) * direction + CGFloat(ringIndex) * 58)
+                ringRotation.concat()
+
+                let radius = size * (0.78 + CGFloat(ringIndex) * 0.23)
+                let flattening = max(0.3, orbit.ringTilt - CGFloat(ringIndex) * 0.08)
+                let ring = NSBezierPath(
+                    ovalIn: NSRect(
+                        x: -radius,
+                        y: -radius * flattening,
+                        width: radius * 2,
+                        height: radius * flattening * 2
+                    )
+                )
+                ring.lineWidth = 0.3 + orbit.depth * 0.28
+                if orbit.kind == .cinnabar && ringIndex == 2 {
+                    var dash: [CGFloat] = [2.1, 1.5]
+                    ring.setLineDash(&dash, count: dash.count, phase: orbit.ringPhase)
+                } else if orbit.kind == .silver && ringIndex == 1 {
+                    var dash: [CGFloat] = [1.2, 1.8]
+                    ring.setLineDash(&dash, count: dash.count, phase: orbit.ringPhase * 0.5)
+                }
+                highlightColor.withAlphaComponent((0.46 - CGFloat(ringIndex) * 0.07) * opacity).setStroke()
+                ring.stroke()
+
+                if ringIndex == 2 && orbit.depth > 0.35 {
+                    let ticks = NSBezierPath()
+                    ticks.lineCapStyle = .round
+                    for tickIndex in 0..<12 {
+                        let angle = CGFloat(tickIndex) / 12 * 2 * .pi
+                        let outerX = cos(angle) * radius
+                        let outerY = sin(angle) * radius * flattening
+                        let innerX = cos(angle) * radius * 0.86
+                        let innerY = sin(angle) * radius * flattening * 0.86
+                        ticks.move(to: NSPoint(x: innerX, y: innerY))
+                        ticks.line(to: NSPoint(x: outerX, y: outerY))
+                    }
+                    baseColor.withAlphaComponent(0.55 * opacity).setStroke()
+                    ticks.lineWidth = 0.22 + orbit.depth * 0.14
+                    ticks.stroke()
+                }
+                NSGraphicsContext.restoreGraphicsState()
+            }
+
+            let coreRect = NSRect(x: -size * 0.42, y: -size * 0.42, width: size * 0.84, height: size * 0.84)
+            let core = NSBezierPath(ovalIn: coreRect)
+            NSGraphicsContext.saveGraphicsState()
+            core.addClip()
+            NSGradient(
+                starting: highlightColor.withAlphaComponent(0.86 * opacity),
+                ending: coreColor.withAlphaComponent(0.9 * opacity)
+            )?.draw(in: coreRect, angle: -56)
+            NSGraphicsContext.restoreGraphicsState()
+            highlightColor.withAlphaComponent(0.86 * opacity).setStroke()
+            core.lineWidth = 0.42 + orbit.depth * 0.24
+            core.stroke()
+
+            let hand = NSBezierPath()
+            hand.lineCapStyle = .round
+            hand.move(to: .zero)
+            hand.line(to: NSPoint(
+                x: cos(orbit.ringPhase * 1.42) * size * 0.29,
+                y: sin(orbit.ringPhase * 1.42) * size * 0.29
+            ))
+            hand.move(to: .zero)
+            hand.line(to: NSPoint(
+                x: cos(-orbit.ringPhase * 0.74 + 1.1) * size * 0.2,
+                y: sin(-orbit.ringPhase * 0.74 + 1.1) * size * 0.2
+            ))
+            highlightColor.withAlphaComponent(0.82 * opacity).setStroke()
+            hand.lineWidth = 0.38 + orbit.depth * 0.2
+            hand.stroke()
+
+            let satelliteRadius = size * 1.22
+            let satellitePoint = NSPoint(
+                x: cos(orbit.satellitePhase) * satelliteRadius,
+                y: sin(orbit.satellitePhase) * satelliteRadius * orbit.ringTilt
+            )
+            baseColor.withAlphaComponent(0.16 * opacity).setFill()
+            NSBezierPath(
+                ovalIn: NSRect(
+                    x: satellitePoint.x - size * 0.3,
+                    y: satellitePoint.y - size * 0.3,
+                    width: size * 0.6,
+                    height: size * 0.6
+                )
+            ).fill()
+            highlightColor.withAlphaComponent(0.9 * opacity).setFill()
+            NSBezierPath(
+                ovalIn: NSRect(
+                    x: satellitePoint.x - size * 0.105,
+                    y: satellitePoint.y - size * 0.105,
+                    width: size * 0.21,
+                    height: size * 0.21
                 )
             ).fill()
 

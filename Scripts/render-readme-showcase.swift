@@ -301,6 +301,9 @@ do {
     case "abyssalReverie":
         themeFilename = "quota-grove-abyssal-reverie-themes.png"
         modeFilename = "quota-grove-abyssal-reverie-modes.png"
+    case "chronoforge":
+        themeFilename = "quota-grove-chronoforge-themes.png"
+        modeFilename = "quota-grove-chronoforge-modes.png"
     default:
         themeFilename = "quota-grove-themes-en-v101.png"
         modeFilename = "quota-grove-modes-en-v101.png"

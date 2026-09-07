@@ -21,6 +21,7 @@ enum CardBackgroundStyle: String, CaseIterable {
     case cloudseaBeacon
     case moonlitConservatory
     case abyssalReverie
+    case chronoforge
     case custom
 
     static let builtInStyles: [CardBackgroundStyle] = [
@@ -28,7 +29,8 @@ enum CardBackgroundStyle: String, CaseIterable {
         .astralTerrarium,
         .cloudseaBeacon,
         .moonlitConservatory,
-        .abyssalReverie
+        .abyssalReverie,
+        .chronoforge
     ]
 }
 
@@ -79,6 +81,7 @@ final class ThemeBackgroundStore {
     var usesBeaconEffects: Bool { selectedStyle == .cloudseaBeacon }
     var usesMoonlitEffects: Bool { selectedStyle == .moonlitConservatory }
     var usesAbyssalEffects: Bool { selectedStyle == .abyssalReverie }
+    var usesChronoforgeEffects: Bool { selectedStyle == .chronoforge }
 
     func image(for theme: QuotaTheme) -> NSImage? {
         let style = selectedStyle
@@ -156,6 +159,7 @@ final class ThemeBackgroundStore {
         case .cloudseaBeacon: backgroundSetDirectory = "CloudseaBeacon"
         case .moonlitConservatory: backgroundSetDirectory = "MoonlitConservatory"
         case .abyssalReverie: backgroundSetDirectory = "AbyssalReverie"
+        case .chronoforge: backgroundSetDirectory = "Chronoforge"
         case .quotaGrove, .custom: backgroundSetDirectory = nil
         }
 

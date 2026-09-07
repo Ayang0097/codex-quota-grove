@@ -190,6 +190,7 @@ final class CardWindowController: NSWindowController, QuotaCardViewDelegate {
             case .cloudseaBeacon: title = AppText.cloudseaBeaconStyle
             case .moonlitConservatory: title = AppText.moonlitConservatoryStyle
             case .abyssalReverie: title = AppText.abyssalReverieStyle
+            case .chronoforge: title = AppText.chronoforgeStyle
             case .custom: continue
             }
             let item = NSMenuItem(title: title, action: #selector(selectBackgroundStyle(_:)), keyEquivalent: "")

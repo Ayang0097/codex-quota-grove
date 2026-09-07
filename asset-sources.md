@@ -4,7 +4,7 @@
 
 - 文件：`Assets/QuotaGroveIcon.svg`
 - 来源：本项目独立绘制的 SVG。
-- 构成：命令提示符、叶片和未闭合的额度环。
+- 构成：未闭合的额度环构成字母 `Q`，尾部自然延伸为一片带叶脉的叶子；深绿色玻璃底座使用项目自有配色。
 - 字体：无。
 
 ## Codex 额度来源标识
@@ -57,6 +57,14 @@
 - 阶段变化：森林为青蓝生物荧光珊瑚，秋林为铜金衰退海域，末日为石榴红暗海沟，废土为银灰白化珊瑚与冷色海雪。
 - 配套动效：青蓝、琥珀、石榴红和银白四种水母的伞体脉动、触手摆动、漂浮轨迹、景深和淡出均由 `AbyssalJellyfishSystem.swift` 与 `QuotaCardView.swift` 实时绘制，不使用第三方水母图片或动画素材。
 
+## 时间铸境背景套系
+
+- 文件：`Assets/BackgroundSets/Chronoforge/forest.png`、`autumn.png`、`apocalypse.png`、`wasteland.png`。
+- 来源：使用内置 OpenAI ImageGen 为 Quota Grove 专门生成并以首张构图为母版定向编辑的四张原创位图；原始输出均为 1935 × 813 px，适配卡片约 2.5:1 的宽幅裁切。
+- 统一视觉：同一座黑曜石、珐琅、黄铜与透明齿轮构成的超现实时间铸造城，主星仪集中在右侧，左侧和底部保留信息暗区；不包含文字、Logo、人物或第三方品牌标识。
+- 阶段变化：森林为铜绿与钴蓝同步机械，秋林为老化黄铜和琥珀时间流，末日为黑钢与朱砂时间裂隙，废土为银灰、骨白瓷与冻结玻璃；废土阶段不含红色边缘提示。
+- 配套动效：铜绿、黄铜、朱砂和银白四种星轮机械体的轨道、刻度、双指针、卫星、自转和曲线漂移均由 `ChronoforgeOrbitSystem.swift` 与 `QuotaCardView.swift` 实时绘制，不使用第三方机械或粒子素材。
+
 ## 落叶粒子
 
 - 文件：`Assets/Leaves/forest-*.png`、`autumn-*.png`、`apocalypse-*.png`、`wasteland-*.png`。
@@ -68,7 +76,7 @@
 
 ## README 展示图与动图
 
-- 文件：`docs/screenshots/quota-grove-themes-en-v101.png`、`docs/screenshots/quota-grove-modes-en-v101.png`、`docs/screenshots/quota-grove-leaf-animation.gif`、`docs/screenshots/quota-grove-astral-terrarium-themes.png`、`docs/screenshots/quota-grove-astral-terrarium-modes.png`、`docs/screenshots/quota-grove-astral-terrarium-animation.gif`、`docs/screenshots/quota-grove-cloudsea-beacon-themes.png`、`docs/screenshots/quota-grove-cloudsea-beacon-modes.png`、`docs/screenshots/quota-grove-cloudsea-beacon-animation.gif`、`docs/screenshots/quota-grove-moonlit-conservatory-themes.png`、`docs/screenshots/quota-grove-moonlit-conservatory-modes.png`、`docs/screenshots/quota-grove-moonlit-conservatory-animation.gif`、`docs/screenshots/quota-grove-abyssal-reverie-themes.png`、`docs/screenshots/quota-grove-abyssal-reverie-modes.png`、`docs/screenshots/quota-grove-abyssal-reverie-animation.gif`。
-- 来源：PNG 由 `Scripts/render-readme-showcase.swift` 调用应用内置的真实预览渲染器生成，再使用 Apple AppKit 合成；GIF 由应用的 `--render-leaf-frames` 逐帧渲染能力输出，再编码为动图。
-- 内容：展示五套背景套系的额度阶段，以及收起、展开、贴边隐藏、主题同步落叶、星屿粒子、灯塔飞鸟、月蝶与水母动效。
+- 文件：`docs/screenshots/quota-grove-themes-en-v101.png`、`docs/screenshots/quota-grove-modes-en-v101.png`、`docs/screenshots/quota-grove-leaf-animation.gif`、`docs/screenshots/quota-grove-weather-rain-v130.gif`、`docs/screenshots/quota-grove-weather-snow-v130.gif`、`docs/screenshots/quota-grove-astral-terrarium-themes.png`、`docs/screenshots/quota-grove-astral-terrarium-modes.png`、`docs/screenshots/quota-grove-astral-terrarium-animation.gif`、`docs/screenshots/quota-grove-cloudsea-beacon-themes.png`、`docs/screenshots/quota-grove-cloudsea-beacon-modes.png`、`docs/screenshots/quota-grove-cloudsea-beacon-animation.gif`、`docs/screenshots/quota-grove-moonlit-conservatory-themes.png`、`docs/screenshots/quota-grove-moonlit-conservatory-modes.png`、`docs/screenshots/quota-grove-moonlit-conservatory-animation.gif`、`docs/screenshots/quota-grove-abyssal-reverie-themes.png`、`docs/screenshots/quota-grove-abyssal-reverie-modes.png`、`docs/screenshots/quota-grove-abyssal-reverie-animation.gif`、`docs/screenshots/quota-grove-chronoforge-themes.png`、`docs/screenshots/quota-grove-chronoforge-modes.png`、`docs/screenshots/quota-grove-chronoforge-animation.gif`。
+- 来源：PNG 由 `Scripts/render-readme-showcase.swift` 调用应用内置的真实预览渲染器生成，再使用 Apple AppKit 合成；GIF 由应用的落叶、雨雪和主题粒子逐帧渲染能力输出，再编码为动图。
+- 内容：展示六套背景套系的额度阶段，以及收起、展开、贴边隐藏、主题同步落叶、星屿粒子、灯塔飞鸟、月蝶、水母与星轮机械体动效。
 - 字体：仅使用 macOS 系统字体，不额外捆绑字体文件。

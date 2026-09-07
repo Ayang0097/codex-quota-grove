@@ -81,6 +81,7 @@ enum AppText {
     static var cloudseaBeaconStyle: String { localized("云海灯塔", "Cloudsea Beacon") }
     static var moonlitConservatoryStyle: String { localized("月光花房", "Moonlit Conservatory") }
     static var abyssalReverieStyle: String { localized("深海幻境", "Abyssal Reverie") }
+    static var chronoforgeStyle: String { localized("时间铸境", "Chronoforge") }
     static var customizeBackground: String { localized("自定义背景…", "Customize background…") }
     static var restoreDefaultBackground: String { localized("恢复默认背景", "Restore default background") }
     static var chooseBackgroundTitle: String { localized("选择卡片背景", "Choose card background") }

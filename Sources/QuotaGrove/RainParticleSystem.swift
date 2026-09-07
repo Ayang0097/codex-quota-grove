@@ -9,6 +9,13 @@ struct RainDrop {
     var lineWidth: CGFloat
     var opacity: CGFloat
     var depth: CGFloat
+    var curvature: CGFloat
+    var shimmerPhase: CGFloat
+    var shimmerSpeed: CGFloat
+
+    var shimmer: CGFloat {
+        0.86 + (sin(shimmerPhase) + 1) * 0.07
+    }
 }
 
 struct RainSplash {
@@ -33,9 +40,9 @@ struct RainParticleSystem {
         splashes.removeAll(keepingCapacity: true)
         guard size.width > 0, size.height > 0 else { return }
 
-        addDrops(count: 26, depth: 0.08...0.34, in: size)
-        addDrops(count: 18, depth: 0.4...0.72, in: size)
-        addDrops(count: 8, depth: 0.78...1, in: size)
+        addDrops(count: 30, depth: 0.08...0.34, in: size)
+        addDrops(count: 22, depth: 0.4...0.72, in: size)
+        addDrops(count: 12, depth: 0.78...1, in: size)
     }
 
     mutating func advance(by deltaTime: TimeInterval, in size: CGSize) {
@@ -45,16 +52,17 @@ struct RainParticleSystem {
         for index in drops.indices {
             drops[index].position.x += drops[index].windSpeed * delta
             drops[index].position.y -= drops[index].fallSpeed * delta
+            drops[index].shimmerPhase += drops[index].shimmerSpeed * CGFloat(delta)
             if drops[index].position.y < -drops[index].length {
                 if drops[index].depth > 0.62,
-                   random.unit() < 0.42,
+                   random.unit() < 0.54,
                    drops[index].position.x > 2,
                    drops[index].position.x < size.width - 2 {
                     splashes.append(RainSplash(
-                        position: CGPoint(x: drops[index].position.x, y: 4),
+                        position: CGPoint(x: drops[index].position.x, y: 5),
                         age: 0,
-                        lifetime: random.double(in: 0.22...0.38),
-                        size: random.cgFloat(in: 2...5) * (0.7 + drops[index].depth * 0.35)
+                        lifetime: random.double(in: 0.26...0.44),
+                        size: random.cgFloat(in: 2.8...6.4) * (0.68 + drops[index].depth * 0.42)
                     ))
                 }
                 respawn(dropAt: index, in: size)
@@ -63,7 +71,7 @@ struct RainParticleSystem {
 
         for index in splashes.indices { splashes[index].age += delta }
         splashes.removeAll { $0.age >= $0.lifetime }
-        if splashes.count > 20 { splashes.removeFirst(splashes.count - 20) }
+        if splashes.count > 24 { splashes.removeFirst(splashes.count - 24) }
     }
 
     mutating func removeAll() {
@@ -84,8 +92,8 @@ struct RainParticleSystem {
     }
 
     private mutating func makeDrop(depth: CGFloat, in size: CGSize, initial: Bool) -> RainDrop {
-        let speed = 58 + depth * 128 + random.cgFloat(in: -12...16)
-        let length = 2.6 + depth * 14 + random.cgFloat(in: -1.1...1.8)
+        let speed = 64 + depth * 142 + random.cgFloat(in: -13...18)
+        let length = 3.2 + depth * 16.8 + random.cgFloat(in: -1.2...2.2)
         let y = initial
             ? random.cgFloat(in: -length...(size.height + length * 2.4))
             : size.height + random.cgFloat(in: 4...(size.height * 0.72 + 10))
@@ -97,9 +105,12 @@ struct RainParticleSystem {
             fallSpeed: speed,
             windSpeed: -(22 + depth * 32 + random.cgFloat(in: 0...12)),
             length: max(2.5, length),
-            lineWidth: 0.07 + depth * 0.38 + random.cgFloat(in: -0.025...0.04),
-            opacity: 0.09 + depth * 0.39 + random.cgFloat(in: -0.02...0.04),
-            depth: depth
+            lineWidth: max(0.08, 0.09 + depth * 0.55 + random.cgFloat(in: -0.025...0.055)),
+            opacity: min(0.78, 0.14 + depth * 0.52 + random.cgFloat(in: -0.025...0.065)),
+            depth: depth,
+            curvature: random.cgFloat(in: -0.42...0.42) * depth,
+            shimmerPhase: random.cgFloat(in: 0...(2 * .pi)),
+            shimmerSpeed: random.cgFloat(in: 2.2...4.8)
         )
     }
 }
