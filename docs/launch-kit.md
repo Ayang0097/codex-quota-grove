@@ -1,4 +1,4 @@
-# 额度森林 v1.4.0 · 发布素材与第一周计划
+# Codex Quota Widget · 额度森林 v1.4.0 发布素材与推广计划
 
 文案草稿，可按各平台语气调整后发布。演示里的额度是示例值；视频由应用真实渲染的界面组成，不是实时额度消耗录像。
 
@@ -6,14 +6,14 @@
 
 - 分享封面：[1280 × 640 PNG](screenshots/quota-grove-social-preview.png)。
 - README 动图：[6 秒 GIF](screenshots/quota-grove-demo.gif)。
-- 完整演示：[20 秒 MP4](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-demo.mp4)。
+- 完整演示：[20 秒 MP4](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-demo.mp4)。
 - 可编辑视频工程：[promo](../promo/README.md)。
-- 项目地址：https://github.com/Ayang0097/quota-grove
-- 下载入口：https://github.com/Ayang0097/quota-grove/releases/latest
+- 项目地址：https://github.com/Ayang0097/codex-quota-grove
+- 下载入口：https://github.com/Ayang0097/codex-quota-grove/releases/latest
 
 ## V2EX「分享创造」草稿
 
-标题：我把 Codex 的剩余额度，做成了一片会枯萎的森林
+标题：Codex Quota Widget：我把剩余额度做成了一片会枯萎的森林
 
 我做了一个桌面小工具 Quota Grove（额度森林），把本机 Codex 的 7 天剩余额度与重置时间放到一个悬浮卡片里。
 
@@ -21,7 +21,7 @@
 
 它每 10 秒读取本机额度记录，不需要 API Key，也不消耗模型 Token。支持 macOS Apple Silicon 和 Windows x64；macOS 额外提供五套背景和可选天气效果。
 
-下载：https://github.com/Ayang0097/quota-grove/releases/latest
+下载：https://github.com/Ayang0097/codex-quota-grove/releases/latest
 
 目前仍有边界：依赖本机 Codex 日志，可能暂时拿不到新数据；macOS 未做 Apple 公证，Windows 也没有商业签名，首次打开可能遇到系统提示。仓库首页有安装说明。
 
@@ -39,7 +39,7 @@ Codex 还剩多少周额度？什么时候重置？
 
 这个小工具叫“额度森林”。可以常驻桌面，也能贴边隐藏。Mac 和 Windows 都能用；读取额度不调用模型，不消耗 Token。
 
-项目与安装说明：github.com/Ayang0097/quota-grove
+项目与安装说明：github.com/Ayang0097/codex-quota-grove
 
 你希望它再显示什么信息？
 
@@ -47,13 +47,13 @@ Codex 还剩多少周额度？什么时候重置？
 
 ## X 英文草稿
 
-I made Quota Grove: your Codex quota, as a forest that fades.
+I made Codex Quota Widget · Quota Grove: your Codex quota, as a forest that fades.
 
 See your remaining weekly quota and reset time on your desktop. Stash it at the screen edge. No API key or model calls for quota polling.
 
 macOS + Windows. Independent, unofficial tool.
 
-https://github.com/Ayang0097/quota-grove
+https://github.com/Ayang0097/codex-quota-grove
 
 建议配 20 秒视频；若字数受账号限制，保留第一句、平台与项目链接。
 
@@ -61,7 +61,7 @@ https://github.com/Ayang0097/quota-grove
 
 我做了一个把 Codex 周额度显示成森林的桌面小工具，支持 Mac 和 Windows。你平时用 Codex 吗？如果方便，想请你试一下，告诉我能否顺利打开、额度是否显示、第二天还会不会留着用。
 
-安装说明：https://github.com/Ayang0097/quota-grove
+安装说明：https://github.com/Ayang0097/codex-quota-grove
 
 ## 第一周执行顺序
 

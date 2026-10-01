@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 
-repo = "Ayang0097/quota-grove"
+repo = "Ayang0097/codex-quota-grove"
 
 def api(path, paginated=False):
     command = ["gh", "api"]

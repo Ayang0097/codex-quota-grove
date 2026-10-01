@@ -1,16 +1,16 @@
-# Quota Grove
+# Codex Quota Widget · Quota Grove
 
-**Your Codex quota, as a forest that fades.**
+**A visual Codex quota monitor and desktop widget for macOS and Windows.**
 
-A desktop widget for your remaining **7-day Codex quota and reset time**. As quota drops, the landscape moves from forest to autumn, apocalypse, and wasteland. Available for macOS and Windows.
+Your Codex quota, as a forest that fades. See your remaining **7-day Codex quota and reset time** at a glance; as quota drops, the landscape moves from forest to autumn, apocalypse, and wasteland.
 
-[中文](README.md) · [Latest release v1.4.0](https://github.com/Ayang0097/quota-grove/releases/latest) · [Report an issue](https://github.com/Ayang0097/quota-grove/issues/new/choose)
+[中文](README.md) · [Latest release v1.4.0](https://github.com/Ayang0097/codex-quota-grove/releases/latest) · [Report an issue](https://github.com/Ayang0097/codex-quota-grove/issues/new/choose)
 
 ![Actual app renders illustrating quota states, not real-time quota consumption](docs/screenshots/quota-grove-demo.gif)
 
 | macOS Apple Silicon | Windows 10 / 11 x64 |
 | :---: | :---: |
-| **[Download for macOS](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-macos-arm64.zip)** | **[Download for Windows](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-windows-x64.zip)** |
+| **[Download for macOS](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-macos-arm64.zip)** | **[Download for Windows](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-windows-x64.zip)** |
 | macOS 13+ · Unzip and move to Applications | Portable · Unzip and run `QuotaGrove.exe` |
 
 Requires local Codex activity containing quota records. The macOS package is Apple Silicon only; the Windows package is x64 only.
@@ -28,7 +28,7 @@ Requires local Codex activity containing quota records. The macOS package is App
 
 **macOS:** unzip the download, move `Quota Grove.app` to Applications, and open it. The current build is ad-hoc signed and not Apple-notarized. If macOS cannot verify the developer, verify the download source first. After trying to open it, follow the prompt in System Settings → Privacy & Security → Open Anyway. See [Apple's instructions](https://support.apple.com/en-us/102445).
 
-**Windows:** fully extract the ZIP and run `QuotaGrove.exe`. No separate .NET installation is needed. The build has no commercial code-signing certificate, so SmartScreen may show a warning. Verify the source and the [SHA-256 checksums](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/SHA256SUMS-v1.4.0.txt).
+**Windows:** fully extract the ZIP and run `QuotaGrove.exe`. No separate .NET installation is needed. The build has no commercial code-signing certificate, so SmartScreen may show a warning. Verify the source and the [SHA-256 checksums](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/SHA256SUMS-v1.4.0.txt).
 
 Use Codex locally to create quota records. **Click** to expand, **double-click** to refresh, **drag** to move or stash, and **right-click** for settings. On macOS, the widget follows the Codex/ChatGPT desktop client's visibility.
 
@@ -57,7 +57,7 @@ On macOS, right-click → Background suite to choose Quota Grove, Astral Terrari
 
 ## Feedback
 
-[Report an issue](https://github.com/Ayang0097/quota-grove/issues/new/choose) with your OS, app version, reproduction steps, and a redacted screenshot. Do not attach full Codex logs or credentials.
+[Report an issue](https://github.com/Ayang0097/codex-quota-grove/issues/new/choose) with your OS, app version, reproduction steps, and a redacted screenshot. Do not attach full Codex logs or credentials.
 
 If it helps your workflow, a **Star** makes it easier to find again and helps other Codex users discover it.
 

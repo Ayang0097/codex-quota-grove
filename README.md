@@ -1,16 +1,16 @@
-# Quota Grove · 额度森林
+# Codex Quota Widget · 额度森林
 
-**把 Codex 的剩余额度，变成一片会枯萎的森林。**
+**macOS 与 Windows 的 Codex 额度监控桌面卡片。**
 
-桌面上随时查看 Codex 的 **7 天剩余额度与重置时间**。额度下降时，森林逐渐走向秋天、末日与废土。支持 macOS 与 Windows。
+把 Codex 的剩余额度变成一片会枯萎的森林。桌面上随时查看 Codex 的 **7 天剩余额度与重置时间**；额度下降时，森林逐渐走向秋天、末日与废土。
 
-[English](README.en.md) · [最新版本 v1.4.0](https://github.com/Ayang0097/quota-grove/releases/latest) · [反馈问题](https://github.com/Ayang0097/quota-grove/issues/new/choose)
+[English](README.en.md) · [最新版本 v1.4.0](https://github.com/Ayang0097/codex-quota-grove/releases/latest) · [反馈问题](https://github.com/Ayang0097/codex-quota-grove/issues/new/choose)
 
 ![应用实际渲染的额度状态演示，并非实时消耗录像](docs/screenshots/quota-grove-demo.gif)
 
 | macOS Apple Silicon | Windows 10 / 11 x64 |
 | :---: | :---: |
-| **[下载 macOS 版](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-macos-arm64.zip)** | **[下载 Windows 版](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-windows-x64.zip)** |
+| **[下载 macOS 版](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-macos-arm64.zip)** | **[下载 Windows 版](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/Quota-Grove-v1.4.0-windows-x64.zip)** |
 | macOS 13+ · 解压后拖入“应用程序” | 便携版 · 解压后运行 `QuotaGrove.exe` |
 
 > 适用于本机已产生 Codex 额度记录的用户。macOS 下载包仅支持 Apple Silicon，Windows 下载包仅支持 x64。首次启动提示见下方。
@@ -28,7 +28,7 @@
 
 **macOS**：下载上方 ZIP，解压，把 `Quota Grove.app` 拖入“应用程序”后打开。当前构建使用 ad-hoc 签名，尚未经过 Apple Developer ID 公证。若系统无法验证开发者，请先确认下载来自本仓库；尝试打开一次后，可在“系统设置 → 隐私与安全”中按系统提示选择“仍要打开”。参见 [Apple 的说明](https://support.apple.com/en-us/102445)。
 
-**Windows**：下载上方 ZIP，完整解压到一个文件夹，运行 `QuotaGrove.exe`。无需安装 .NET。当前构建没有商业代码签名证书，可能显示 SmartScreen 提示；请核对下载来源与 [SHA-256 校验值](https://github.com/Ayang0097/quota-grove/releases/download/v1.4.0/SHA256SUMS-v1.4.0.txt)。
+**Windows**：下载上方 ZIP，完整解压到一个文件夹，运行 `QuotaGrove.exe`。无需安装 .NET。当前构建没有商业代码签名证书，可能显示 SmartScreen 提示；请核对下载来源与 [SHA-256 校验值](https://github.com/Ayang0097/codex-quota-grove/releases/download/v1.4.0/SHA256SUMS-v1.4.0.txt)。
 
 打开本机 Codex 并正常使用，等待产生额度记录。卡片显示后，**单击展开、双击刷新、拖动贴边、右键设置**。macOS 版会跟随 Codex/ChatGPT 桌面客户端显示或隐藏。
 
@@ -70,7 +70,7 @@ macOS 提供额度森林、星屿生态舱、云海灯塔、月光花房、深�
 
 ## 反馈与支持
 
-遇到安装或数据显示问题，请 [提交问题](https://github.com/Ayang0097/quota-grove/issues/new/choose)，附上操作系统、应用版本、复现步骤和已打码的截图。请勿上传完整 Codex 日志或账号凭据。
+遇到安装或数据显示问题，请 [提交问题](https://github.com/Ayang0097/codex-quota-grove/issues/new/choose)，附上操作系统、应用版本、复现步骤和已打码的截图。请勿上传完整 Codex 日志或账号凭据。
 
 如果它对你有帮助，欢迎点一个 **Star**，方便以后找到项目，也让更多 Codex 用户发现它。
 

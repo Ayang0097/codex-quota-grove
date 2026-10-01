@@ -1,4 +1,4 @@
-# Quota Grove for Windows
+# Codex Quota Widget · Quota Grove for Windows
 
 Windows 版使用 .NET 8 WPF 实现，与 macOS 版共享额度解析规则、主题边界和本地数据原则。
 

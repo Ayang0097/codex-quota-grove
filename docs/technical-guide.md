@@ -1,14 +1,14 @@
-# Quota Grove · 功能与技术参考
+# Codex Quota Widget · 额度森林功能与技术参考
 
 Quota Grove 是一个支持 macOS 与 Windows 的桌面悬浮卡片，用环境变化显示本机 Codex 的 7 天剩余额度和重置时间。
 
 卡片标题旁的 Codex 图标仅用于标明额度数据来自用户本机的 Codex/ChatGPT 桌面客户端；它不是 Quota Grove 的应用图标、仓库标志或产品品牌。
 
-[![Latest release](https://img.shields.io/github/v/release/Ayang0097/quota-grove?label=最新版&color=2fbd85)](https://github.com/Ayang0097/quota-grove/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/Ayang0097/codex-quota-grove?label=最新版&color=2fbd85)](https://github.com/Ayang0097/codex-quota-grove/releases/latest)
 ![macOS](https://img.shields.io/badge/macOS-13%2B-1f2937?logo=apple)
 ![Windows](https://img.shields.io/badge/Windows-10%2F11-1674d1?logo=windows11)
 
-[下载最新版本](https://github.com/Ayang0097/quota-grove/releases/latest) · [查看安装说明](#下载与安装)
+[下载最新版本](https://github.com/Ayang0097/codex-quota-grove/releases/latest) · [查看安装说明](#下载与安装)
 
 ## v1.3.0 更新回顾
 
@@ -129,7 +129,7 @@ Windows 版按 macOS 卡片的物理观感重新换算为紧凑尺寸，系统�
 
 ## 下载与安装
 
-前往 [GitHub Releases](https://github.com/Ayang0097/quota-grove/releases/latest) 下载对应系统版本：
+前往 [GitHub Releases](https://github.com/Ayang0097/codex-quota-grove/releases/latest) 下载对应系统版本：
 
 - macOS：`Quota-Grove-*-macos-arm64.zip`，解压后将 `Quota Grove.app` 拖入“应用程序”文件夹。
 - Windows：`Quota-Grove-*-windows-x64.zip`，解压后运行 `QuotaGrove.exe`。这是便携版，不要求预装 .NET。
